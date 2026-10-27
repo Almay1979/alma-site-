@@ -450,6 +450,7 @@ section { padding-block: clamp(22px, 3vw, 38px) !important; }
 .form-alt .alt-sep { color: var(--card-line); }
 .team .kicker { font-size: clamp(2.6rem, 5.2vw, 4.3rem) !important; white-space: nowrap; }
 @media (max-width: 960px){ .team .kicker { white-space: normal; font-size: clamp(3.1rem, 8.2vw, 5.6rem) !important; } }
+.field .opt { font-weight: 400; color: var(--text-soft); font-size: .92em; }
 </style>
 </head>
 <body>
@@ -688,6 +689,11 @@ section { padding-block: clamp(22px, 3vw, 38px) !important; }
           <span class="err" id="e-phone" aria-live="polite"></span>
         </div>
         <div class="field">
+          <label for="f-email">אימייל <span class="opt">(לא חובה)</span></label>
+          <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" dir="rtl" aria-describedby="e-email">
+          <span class="err" id="e-email" aria-live="polite"></span>
+        </div>
+        <div class="field">
           <label for="f-city">עיר או יישוב</label>
           <input id="f-city" name="city" type="text" autocomplete="address-level2" required aria-describedby="e-city">
           <span class="err" id="e-city" aria-live="polite"></span>
@@ -909,6 +915,8 @@ section { padding-block: clamp(22px, 3vw, 38px) !important; }
     var city = form.city.value.trim();
     if (name.length < 2) { setErr("e-name", "נא להזין שם מלא", "f-name"); ok = false; first = first || form.name; } else setErr("e-name", "", "f-name");
     if (!/^(\+972|972|0)\d{8,9}$/.test(phone)) { setErr("e-phone", "נא להזין מספר טלפון תקין, למשל 050-0000000", "f-phone"); ok = false; first = first || form.phone; } else setErr("e-phone", "", "f-phone");
+    var mail = form.email.value.trim();
+    if (mail && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)) { setErr("e-email", "נא להזין כתובת אימייל תקינה, או להשאיר ריק", "f-email"); ok = false; first = first || form.email; } else setErr("e-email", "", "f-email");
     if (city.length < 2) { setErr("e-city", "נא להזין עיר או יישוב", "f-city"); ok = false; first = first || form.city; } else setErr("e-city", "", "f-city");
     if (!form.property_type.value) { setErr("e-type", "נא לבחור סוג נכס", "f-type"); ok = false; first = first || form.property_type; } else setErr("e-type", "", "f-type");
     if (!form.consent.checked) { setErr("e-consent", "יש לאשר את יצירת הקשר ואת מדיניות הפרטיות", "f-consent"); ok = false; first = first || form.consent; } else setErr("e-consent", "", "f-consent");
@@ -939,6 +947,8 @@ section { padding-block: clamp(22px, 3vw, 38px) !important; }
         "שם מלא": form.name.value.trim(),
         "טלפון": form.phone.value.trim(),
         "עיר / יישוב": form.city.value.trim(),
+        "אימייל": form.email.value.trim() || "לא הוזן",
+        email: form.email.value.trim() || undefined,
         "סוג הנכס": form.property_type.value,
         "אישור יצירת קשר ופרטיות": "אושר"
       })
